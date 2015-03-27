@@ -2,47 +2,36 @@
 
 "use strict";
 
-let http = require('http');
-let endpoint = require('./endpoint');
 let tar = require('tar-stream');
 
+exports.createService = function (manager, serviceId, serviceConfig) {
 
-http.createServer(function(req, res) {
-  res.writeHead(200, {
-    'Content-Type': 'text/plain'
-  });
-  res.end('Hello World\n');
-}).listen(12345, '127.0.0.1');
+	let extract = tar.extract();
 
-let extract = tar.extract();
+	let out1 = manager.getEndpoint(serviceId, 'out1');
 
-let out1 = endpoint.get('out1');
+	extract.on('entry', function (header, stream, callback) {
 
-extract.on('entry', function(header, stream, callback) {
+		stream.on('end', function () {
+			callback(); // ready for next entry
+		});
 
-  console.log("got: " + header.name);
+		try {
+			out1(header, stream, function (err) {
+				if (err) { 
+					console.log(err);
+					stream.resume();
+				}
+			});
+		} catch (e) {
+			console.log(e);
+			stream.resume();
+		}
+	});
 
-  stream.on('end', function() {
-    callback(); // ready for next entry
-  });
+	let in1 = manager.getEndpoint('in1')();
 
-  try {
-    out1(header, stream, function(err) {
-      if (err) { 
-        console.log(err);
-        stream.resume();
-      }
-    });
-  } catch (e) {
-    console.log(e);
-    stream.resume();
-  }
-});
-
-
-let in1 = endpoint.get('in1')();
-
-
-for (let connection of in1) {
-  connection.stream.pipe(extract);
-}
+	for (let connection of in1) {
+		connection.stream.pipe(extract);
+	}
+};
