@@ -2,16 +2,28 @@
 
 "use strict";
 
-let manager = require('service-manager');
+let manager = require('service-manager').manager;
+
 let tar = require('../index.js');
+var assert = require('assert');
 
-manager.declareEndpoints({
-  'service1': {
-    'in1': 'stdin',
-    'out1': function (info, stream, cb) {}
-  },
+describe('tar service declaration', function () {
+  let myManager = manager();
+  myManager.declareServices({
+    'service1': {
+      'endpoints': {
+        'in1': function* () {
+          yield {
+            info: {},
+            pipe: process.stdin
+          };
+        },
+        'out1': function (info, stream, cb) {}
+      }
+    }
+  });
+  it('declared services should be present', function () {
+    let service = tar.createService(myManager, 'service1', {});
+    assert(service);
+  });
 });
-
-let service = tar.createService(manager, 'service1', {});
-
-// service.shutdown();

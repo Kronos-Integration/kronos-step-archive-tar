@@ -11,5 +11,8 @@
   "dependencies": {
     "service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/service-manager.git",
     "tar-stream": "^1.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1"
   }
 }
