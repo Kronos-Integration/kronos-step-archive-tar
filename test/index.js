@@ -15,30 +15,34 @@ describe('tar service declaration', function () {
   const name = path.join(__dirname,
     'fixtures/a.tar');
 
-  myManager.declareServices({
-    'service1': {
-      'endpoints': {
-        'in1': function* () {
-          yield {
-            info: {
-              name: name
-            },
-            stream: fs.createReadStream(name)
-          };
-        },
-        'out1': function* () {
-          do {
-            let connection =
-              yield;
-            console.log(`name: ${connection.info.name}`);
-            connection.stream.resume();
-          } while (true);
+  myManager.declareFlow({
+    "name": "flow1",
+    "steps": {
+      's1': {
+        'endpoints': {
+          'in': function* () {
+            yield {
+              info: {
+                name: name
+              },
+              stream: fs.createReadStream(name)
+            };
+          },
+          'out': function* () {
+            do {
+              let connection =
+                yield;
+              console.log(`name: ${connection.info.name}`);
+              connection.stream.resume();
+            } while (true);
+          }
         }
       }
     }
   });
   it('services should be present', function () {
-    let service = tar.createService(myManager, 'service1', {});
-    //assert(service);
+    let step = myManager.getFlow('flow1').steps.s1;
+    tar.initializeStep(myManager, step);
+    assert(step);
   });
 });
