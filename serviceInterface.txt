@@ -30,7 +30,7 @@ getName();
 }
 
 
-// giobt eine reine textuelle beschreibung dieser Komponente zurück.
+// gibt eine reine textuelle beschreibung dieser Komponente zurück.
 // wird nur benutzt um des dem user in der GUI anzeigen zu können
 getDescription();
 
@@ -42,10 +42,10 @@ getParameterDescription()
 {
         type: <service/template>                // hiermit meine ich ob das Teil über getInstance() oder über get Service geholt wird.
                                                 // ein Service kann direct verwendet werden. Ein 'template' muss erste instanziiert werden.
-        instanceParameter{
+        instanceParameter {
             endpoints: {                            // Hash der endpoints
                 <name> : {                          // Name des endpoints.
-                        type : <in|out>             // der Typ des endpoins
+                        direction : <in|out|inout>  // der Typ des endpoins
                         mandatory: <true|false>     // muss der endpoint vorhanden sein
                         desc: <any text>            // eine textuelle beschreibung des endpoints. Nur für die GUI oder als doc
                         dataType: {
