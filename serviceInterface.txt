@@ -8,8 +8,13 @@ getInstance(param);
 
 
 // ?????
+// irgentwie müssen wir die Proxys die eine instanz liefern von den reinen Services unterscheiden.
 getService(param);
 
+// führt den step aus.
+// in der config sind dann die daten wie unten beschrieben.
+// configParam wird auch automatisch validiert.
+execute(configParam)
 
 
 // gibt den namen zurück unter der diese(s) abstract objject/function
@@ -37,7 +42,7 @@ getParameterDescription()
 {
         type: <service/template>                // hiermit meine ich ob das Teil über getInstance() oder über get Service geholt wird.
                                                 // ein Service kann direct verwendet werden. Ein 'template' muss erste instanziiert werden.
-        instanzParameter{
+        instanceParameter{
             endpoints: {                            // Hash der endpoints
                 <name> : {                          // Name des endpoints.
                         type : <in|out>             // der Typ des endpoins
