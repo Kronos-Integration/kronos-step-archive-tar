@@ -48,6 +48,7 @@ getParameterDescription()
                         direction : <in|out|inout>  // der Typ des endpoins
                         mandatory: <true|false>     // muss der endpoint vorhanden sein
                         desc: <any text>            // eine textuelle beschreibung des endpoints. Nur für die GUI oder als doc
+                        uti: <uniform type identifier> // https://en.wikipedia.org/wiki/Uniform_Type_Identifier
                         dataType: {
                             <fieldName 1> : {         // beschreibt ein jedes feld in dem hash des endpoints
                                 type : <stream|string|number|function|object|hash|array|...>
