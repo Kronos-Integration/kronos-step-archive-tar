@@ -5,16 +5,18 @@
 let tar = require('tar-stream');
 
 exports.stepImplementation = {
-  "definition": {
-    "endpoints": {
-      "in": {
-        "direction": "in",
-        "mandatory": true
-      },
-      "out": {
-        "direction": "out",
-        "mandatory": true
-      }
+  "name": "untar",
+  "description": "decomposes tar archive into individual output requests",
+  "endpoints": {
+    "in": {
+      "direction": "in",
+      "uti": "public.tar-archive",
+      "mandatory": true
+    },
+    "out": {
+      "direction": "out",
+      "uti": "public.data",
+      "mandatory": true
     }
   },
   "initialize": function (manager, step) {
