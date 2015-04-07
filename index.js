@@ -10,17 +10,17 @@ exports.stepImplementations = {
 		"endpoints": {
 			"in": {
 				"direction": "in",
-				"uti": "public.tar-archive"
+				"uti": "public.tar-archive",
 				"info_desc": {
 					"tarFileName": {
 						"description": "The file name of the tar ball",
-						"mandatory": "false",
+						"mandatory": false,
 						"default": ","
 					}
 				}
 			},
 			"out": {
-				"direction": "out"
+				"direction": "out",
 				"info_desc": {
 					"detailFileName": {
 						"description": "The file name of the extratcted entry"
@@ -28,14 +28,14 @@ exports.stepImplementations = {
 				}
 			}
 		},
-		"initialize": function(manager, step) {
+		"initialize": function (manager, step) {
 			const extract = tar.extract();
 			const out = step.endpoints.out.implementation();
 
 			out.next(); // advance to 1st. connection - TODO: needs to be moved into service-manager
 
-			extract.on('entry', function(header, stream, callback) {
-				stream.on('end', function() {
+			extract.on('entry', function (header, stream, callback) {
+				stream.on('end', function () {
 					callback(); // ready for next entry
 				});
 
