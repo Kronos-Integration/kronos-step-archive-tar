@@ -12,13 +12,19 @@ exports.stepImplementations = {
 				"direction": "in",
 				"uti": "public.tar-archive"
 				"info_desc": {
-					"tarFileName": "The file name of the tar ball"
+					"tarFileName": {
+						"description": "The file name of the tar ball",
+						"mandatory": "false",
+						"default": ","
+					}
 				}
 			},
 			"out": {
 				"direction": "out"
 				"info_desc": {
-					"detailFileName": "The file name of the extratcted entry"
+					"detailFileName": {
+						"description": "The file name of the extratcted entry"
+					}
 				}
 			}
 		},
