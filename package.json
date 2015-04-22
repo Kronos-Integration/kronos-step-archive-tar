@@ -1,10 +1,10 @@
 {
-  "name": "step-tar",
+  "name": "kronos-step-tar",
   "version": "0.0.1",
   "description": "flow step to untar streams",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/index.js"
+    "test": "mocha test/*.js"
   },
   "author": "Markus Felten <markus.felten@gmx.de>",
   "license": "ISC",

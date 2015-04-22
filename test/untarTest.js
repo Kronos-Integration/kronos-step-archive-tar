@@ -4,19 +4,19 @@
 "use strict";
 
 const serviceManger = require('kronos-service-manager');
-const tar = require('../index.js');
+const untar = require('../lib/untar');
 const fs = require('fs');
 const path = require('path');
 
 var assert = require('assert');
 
-serviceManger.stepImplementation.register(tar.stepImplementations);
+serviceManger.stepImplementation.register(untar.stepImplementations);
 
-describe('tar service declaration', function () {
+describe('untar service declaration', function () {
 	const myManager = serviceManger.manager();
 
 	const name = path.join(__dirname,
-		'fixtures/a.tar');
+		'fixtures/a.untar');
 
 	const names = {};
 	let archiveName;
@@ -25,7 +25,7 @@ describe('tar service declaration', function () {
 		"flow1": {
 			"steps": {
 				's1': {
-					"type": "untar",
+					"type": "ununtar",
 					"endpoints": {
 						"in": function* () {
 							yield {
@@ -54,7 +54,7 @@ describe('tar service declaration', function () {
 
 	it('content should be processed', function (done) {
 		const step = myManager.getFlow('flow1').steps.s1;
-		tar.stepImplementations.untar.initialize(myManager, step);
+		untar.stepImplementations.ununtar.initialize(myManager, step);
 
 		// TODO how to know when input is completly processed ?
 		setTimeout(function () {
