@@ -1,5 +1,5 @@
 {
-	"name": "kronos-step-tar",
+	"name": "kronos-step-file-tar",
 	"version": "0.0.1",
 	"description": "flow step to untar streams",
 	"main": "index.js",
@@ -17,6 +17,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step-tar"
+		"url": "ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step-file-tar"
 	}
 }

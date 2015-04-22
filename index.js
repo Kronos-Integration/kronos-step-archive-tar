@@ -1,2 +1,2 @@
-var untar = require('lib/untar');
+var untar = require('./lib/untar');
 module.exports.kronos_untar = untar;
