@@ -3,29 +3,25 @@
 
 "use strict";
 
-const serviceManger = require('kronos-service-manager');
-const untar = require('../lib/untar');
+const kronos = require('kronos-service-manager');
 const fs = require('fs');
 const path = require('path');
 
-var assert = require('assert');
-
-serviceManger.stepImplementation.register(untar.stepImplementations);
+const assert = require('assert');
 
 describe('untar service declaration', function () {
-	const myManager = serviceManger.manager();
 
 	const name = path.join(__dirname,
-		'fixtures/a.untar');
+		'fixtures/a.tar');
 
 	const names = {};
 	let archiveName;
 
-	myManager.declareFlows({
+	const flowDecls = {
 		"flow1": {
 			"steps": {
 				's1': {
-					"type": "ununtar",
+					"type": "untar",
 					"endpoints": {
 						"in": function* () {
 							yield {
@@ -50,17 +46,23 @@ describe('untar service declaration', function () {
 				}
 			}
 		}
-	});
+	};
 
 	it('content should be processed', function (done) {
-		const step = myManager.getFlow('flow1').steps.s1;
-		untar.stepImplementations.ununtar.initialize(myManager, step);
+		const myManager = kronos.manager({
+			flows: flowDecls,
+			stepDirectories: path.join(__dirname, '..', 'lib')
+		}).then(function (manager) {
+			const flow1 = manager.getFlow('flow1');
+			const step = flow1.steps.s1;
+			flow1.initialize(manager);
 
-		// TODO how to know when input is completly processed ?
-		setTimeout(function () {
-			assert(names.file1 && names.file2 && names.file3);
-			assert(archiveName === name);
-			done();
-		}, 10);
+			// TODO how to know when input is completly processed ?
+			setTimeout(function () {
+				assert(names.file1 && names.file2 && names.file3);
+				assert(archiveName === name);
+				done();
+			}, 10);
+		});
 	});
 });
