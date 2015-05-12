@@ -1,23 +1,22 @@
 {
-  "name": "kronos-step-archive-tar",
-  "version": "0.0.1",
-  "description": "flow step to untar streams",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha test/*.js"
-  },
-  "author": "Markus Felten <markus.felten@gmx.de>",
-  "license": "ISC",
-  "dependencies": {
-    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git",
-    "log4js": "^0.6.24",
-    "tar-stream": "^1.1.2"
-  },
-  "devDependencies": {
-    "mocha": "^2.2.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step-archive-tar.git"
-  }
+	"name": "kronos-step-archive-tar",
+	"version": "0.0.1",
+	"description": "flow step to untar streams",
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha test/*.js"
+	},
+	"author": "Markus Felten <markus.felten@gmx.de>",
+	"license": "ISC",
+	"dependencies": {
+		"kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git",
+		"tar-stream": "^1.1.2"
+	},
+	"devDependencies": {
+		"mocha": "^2.2.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step-archive-tar.git"
+	}
 }
