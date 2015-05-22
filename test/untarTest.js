@@ -23,24 +23,28 @@ describe('untar service declaration', function () {
 				's1': {
 					"type": "kronos_untar",
 					"endpoints": {
-						"in": function* () {
-							yield {
-								info: {
-									name: name
-								},
-								stream: fs.createReadStream(name)
+						"in": function () {
+							return function* () {
+								yield {
+									info: {
+										name: name
+									},
+									stream: fs.createReadStream(name)
+								};
 							};
 						},
-						"out": function* () {
-							do {
-								let connection =
-									yield;
-								//console.log(`name: ${connection.info.name}`);
-								names[connection.info.name] = true;
-								archiveName = connection.info.archiveName;
+						"out": function () {
+							return function* () {
+								do {
+									let connection =
+										yield;
+									//console.log(`name: ${connection.info.name}`);
+									names[connection.info.name] = true;
+									archiveName = connection.info.archiveName;
 
-								connection.stream.resume();
-							} while (true);
+									connection.stream.resume();
+								} while (true);
+							};
 						}
 					}
 				}
