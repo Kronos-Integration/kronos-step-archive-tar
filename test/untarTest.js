@@ -16,6 +16,7 @@ describe('untar service declaration', function () {
 
 	const names = {};
 	let archiveName;
+	let tarStream;
 
 	const flowDecls = {
 		"flow1": {
@@ -25,11 +26,13 @@ describe('untar service declaration', function () {
 					"endpoints": {
 						"in": function () {
 							return function* () {
+								tarStream = fs.createReadStream(name);
+
 								yield {
 									info: {
 										name: name
 									},
-									stream: fs.createReadStream(name)
+									stream: tarStream
 								};
 							};
 						},
@@ -52,7 +55,7 @@ describe('untar service declaration', function () {
 		}
 	};
 
-	it('content should be processed', function (done) {
+	it('all entries should be consumed', function (done) {
 		const myManager = kronos.manager({
 			flows: flowDecls,
 			stepDirectories: path.join(__dirname, '..', 'lib')
@@ -60,14 +63,12 @@ describe('untar service declaration', function () {
 			const flow1 = manager.flowDefinitions.flow1;
 			flow1.initialize(manager);
 
-			// TODO how to know when input is completly processed ?
-			setTimeout(function () {
-				//console.log(`names: ${JSON.stringify(names)}`);
-
+			// if tar stream eneded we should have consumed all entries
+			tarStream.on('end', function () {
 				assert(names.file1 && names.file2 && names.file3);
 				assert(archiveName === name);
 				done();
-			}, 100);
+			});
 		});
 	});
 });
