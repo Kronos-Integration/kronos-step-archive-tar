@@ -38,7 +38,7 @@ describe('untar service declaration', function () {
 								do {
 									let connection =
 										yield;
-									console.log(`name: ${connection.info.name}`);
+									//console.log(`name: ${connection.info.name}`);
 									names[connection.info.name] = true;
 									archiveName = connection.info.archiveName;
 
@@ -62,7 +62,7 @@ describe('untar service declaration', function () {
 
 			// TODO how to know when input is completly processed ?
 			setTimeout(function () {
-				console.log(`names: ${JSON.stringify(names)}`);
+				//console.log(`names: ${JSON.stringify(names)}`);
 
 				assert(names.file1 && names.file2 && names.file3);
 				assert(archiveName === name);
