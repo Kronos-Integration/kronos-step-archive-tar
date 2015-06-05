@@ -25,7 +25,7 @@ describe('untar service declaration', function () {
 					"type": "kronos_untar",
 					"endpoints": {
 						"in": function () {
-							return function* () {
+							const myGen = function* () {
 								tarStream = fs.createReadStream(name);
 
 								yield {
@@ -35,12 +35,12 @@ describe('untar service declaration', function () {
 									stream: tarStream
 								};
 							};
+							return myGen();
 						},
 						"out": function () {
-							return function* () {
+							const myGen = function* () {
 								do {
-									let connection =
-										yield;
+									let connection = yield;
 									//console.log(`name: ${connection.info.name}`);
 									names[connection.info.name] = true;
 									archiveName = connection.info.archiveName;
@@ -48,6 +48,9 @@ describe('untar service declaration', function () {
 									connection.stream.resume();
 								} while (true);
 							};
+							const go = myGen();
+							go.next();
+							return go;
 						}
 					}
 				}
