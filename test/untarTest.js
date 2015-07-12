@@ -59,10 +59,10 @@ describe('untar service declaration', function () {
 	};
 
 	it('all entries should be consumed', function (done) {
-		const myManager = kronos.manager({
-			flows: flowDecls,
-			stepDirectories: path.join(__dirname, '..', 'lib')
-		}).then(function (manager) {
+		const myManager = kronos.manager().then(function (manager) {
+			require('../index').registerWithManager(manager);
+			manager.declareFlows(flowDecls);
+
 			const flow1 = manager.flowDefinitions.flow1;
 			flow1.initialize(manager);
 
