@@ -1,2 +1,3 @@
-var tar = require('./lib/untar');
-module.exports.kronos_untar = tar;
+exports.registerWithManager = function(manager) {
+  manager.registerStepImplementation('kronos_untar',require('./lib/untar'));
+};
