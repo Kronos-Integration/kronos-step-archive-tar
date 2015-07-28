@@ -11,7 +11,7 @@ const assert = require('assert');
 
 describe('untar service declaration', function () {
 
-	const name = path.join(__dirname,
+	const tarFileName = path.join(__dirname,
 		'fixtures/a.tar');
 
 	const names = {};
@@ -22,15 +22,28 @@ describe('untar service declaration', function () {
 		"flow1": {
 			"steps": {
 				's1': {
-					"type": "kronos_untar",
+					"type": "kronos-untar",
 					"endpoints": {
-						"in": function () {
+						"in": function (generatorFunction) {
+							if(generatorFunction) {
+									const generatorObject = generatorFunction();
+									console.log("got generator");
+
+									generatorObject.next(	{
+											info: {
+												name: tarFileName
+											},
+											stream: fs.createReadStream(tarFileName) }
+									);
+									return;
+							}
+
 							const myGen = function* () {
-								tarStream = fs.createReadStream(name);
+								tarStream = fs.createReadStream(tarFileName);
 
 								yield {
 									info: {
-										name: name
+										name: tarFileName
 									},
 									stream: tarStream
 								};
@@ -41,7 +54,7 @@ describe('untar service declaration', function () {
 							const myGen = function* () {
 								do {
 									let connection = yield;
-									//console.log(`name: ${connection.info.name}`);
+									console.log(`name: ${connection.info.name}`);
 									names[connection.info.name] = true;
 									archiveName = connection.info.archiveName;
 
