@@ -9,7 +9,7 @@ const path = require('path');
 
 const assert = require('assert');
 
-describe('untar service declaration', function () {
+describe('untar', function () {
 
 	const tarFileName = path.join(__dirname,
 		'fixtures/a.tar');
@@ -24,19 +24,19 @@ describe('untar service declaration', function () {
 				's1': {
 					"type": "kronos-untar",
 					"endpoints": {
-						"in": function (manager,generatorFunction) {
-							if(generatorFunction) {
-									const generatorObject = generatorFunction();
-									tarStream = fs.createReadStream(tarFileName);
-									generatorObject.next();
+						"in": function (manager, generatorFunction) {
+							if (generatorFunction) {
+								const generatorObject = generatorFunction();
+								tarStream = fs.createReadStream(tarFileName);
+								generatorObject.next();
 
-									generatorObject.next(	{
-											info: {
-												name: tarFileName
-											},
-											stream: tarStream }
-									);
-									return;
+								generatorObject.next({
+									info: {
+										name: tarFileName
+									},
+									stream: tarStream
+								});
+								return;
 							}
 
 							const myGen = function* () {
@@ -72,20 +72,28 @@ describe('untar service declaration', function () {
 		}
 	};
 
-	it('all entries should be consumed', function (done) {
-		const myManager = kronos.manager().then(function (manager) {
-			require('../index').registerWithManager(manager);
-			manager.declareFlows(flowDecls);
+	describe('passive in', function () {
+		it('all entries should be consumed', function (done) {
+			const myManager = kronos.manager().then(function (manager) {
+				require('../index').registerWithManager(manager);
+				manager.declareFlows(flowDecls);
 
-			const flow1 = manager.flowDefinitions.flow1;
-			flow1.initialize(manager);
+				const flow1 = manager.flowDefinitions.flow1;
+				flow1.initialize(manager);
 
-			// if tar stream eneded we should have consumed all entries
-			tarStream.on('end', function () {
-				assert(names.file1 && names.file2 && names.file3);
-				assert(archiveName === tarFileName);
-				done();
+				// if tar stream ended we should have consumed all entries
+				tarStream.on('end', function () {
+					assert(names.file1 && names.file2 && names.file3);
+					assert(archiveName === tarFileName);
+					done();
+				});
 			});
 		});
 	});
+
+
+	describe('active in', function () {
+		// TODO don`t know how to enforce active
+	});
+
 });
