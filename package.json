@@ -1,7 +1,8 @@
 {
   "name": "kronos-step-archive-tar",
+  "tags": "kronos-step",
   "version": "0.0.1",
-  "description": "flow step to untar streams",
+  "description": "flow step to tar/untar streams",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js"
@@ -12,8 +13,11 @@
     "tar-stream": "1.2.1"
   },
   "devDependencies": {
-    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git",
-    "mocha": "2.2.5"
+    "mocha": "2.2.5",
+    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git"
+  },
+  "_peerDependencies": {
+    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git"
   },
   "repository": {
     "type": "git",

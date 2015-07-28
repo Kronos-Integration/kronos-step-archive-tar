@@ -24,16 +24,17 @@ describe('untar service declaration', function () {
 				's1': {
 					"type": "kronos-untar",
 					"endpoints": {
-						"in": function (generatorFunction) {
+						"in": function (manager,generatorFunction) {
 							if(generatorFunction) {
 									const generatorObject = generatorFunction();
-									console.log("got generator");
+									tarStream = fs.createReadStream(tarFileName);
+									generatorObject.next();
 
 									generatorObject.next(	{
 											info: {
 												name: tarFileName
 											},
-											stream: fs.createReadStream(tarFileName) }
+											stream: tarStream }
 									);
 									return;
 							}
@@ -50,11 +51,11 @@ describe('untar service declaration', function () {
 							};
 							return myGen();
 						},
-						"out": function () {
+						"out": function (manager) {
 							const myGen = function* () {
 								do {
 									let connection = yield;
-									console.log(`name: ${connection.info.name}`);
+									//console.log(`name: ${connection.info.name}`);
 									names[connection.info.name] = true;
 									archiveName = connection.info.archiveName;
 
@@ -82,7 +83,7 @@ describe('untar service declaration', function () {
 			// if tar stream eneded we should have consumed all entries
 			tarStream.on('end', function () {
 				assert(names.file1 && names.file2 && names.file3);
-				assert(archiveName === name);
+				assert(archiveName === tarFileName);
 				done();
 			});
 		});
