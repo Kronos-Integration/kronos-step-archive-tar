@@ -62,7 +62,7 @@ describe('untar', function () {
 								} while (true);
 							};
 							const go = myGen();
-							//go.next();
+							go.next();
 							return go;
 						}
 					}
