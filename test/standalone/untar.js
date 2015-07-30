@@ -19,7 +19,7 @@ const flowDecls = {
 			's1': {
 				"type": "kronos-untar",
 				"endpoints": {
-					"in": function (manger,generatorFunction) {
+					"in": function (manger, generatorFunction) {
 						if (generatorFunction) {
 							const generatorObject = generatorFunction();
 							generatorObject.next();

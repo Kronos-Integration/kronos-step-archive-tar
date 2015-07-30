@@ -11,8 +11,7 @@ const assert = require('assert');
 
 describe('untar', function () {
 
-	const tarFileName = path.join(__dirname,
-		'fixtures/a.tar');
+	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
 	const names = {};
 	let archiveName;
