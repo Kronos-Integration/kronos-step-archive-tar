@@ -14,6 +14,8 @@
     "tar-stream": "1.2.1"
   },
   "devDependencies": {
+    "chai": "3.2.0",
+    "chai-as-promised": "5.1.0",
     "mocha": "2.2.5",
     "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git"
   },

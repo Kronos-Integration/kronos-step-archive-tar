@@ -7,7 +7,10 @@ const kronos = require('kronos-service-manager');
 const fs = require('fs');
 const path = require('path');
 
-const assert = require('assert');
+const chai = require('chai');
+const assert = chai.assert;
+const expect = chai.expect;
+const should = chai.should();
 
 describe('untar', function () {
 
@@ -82,17 +85,15 @@ describe('untar', function () {
 
 				// if tar stream ended we should have consumed all entries
 				tarStream.on('end', function () {
-					assert(names.file1 && names.file2 && names.file3);
-					assert(archiveName === tarFileName);
+					assert.isTrue(names.file1 && names.file2 && names.file3);
+					assert.equal(archiveName, tarFileName);
 					done();
 				});
 			});
 		});
 	});
 
-
 	describe('active in', function () {
 		// TODO don`t know how to enforce active
 	});
-
 });
