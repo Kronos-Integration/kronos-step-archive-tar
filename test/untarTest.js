@@ -1,4 +1,4 @@
-/* global describe, it*/
+/* global describe, it */
 /* jslint node: true, esnext: true */
 
 "use strict";
