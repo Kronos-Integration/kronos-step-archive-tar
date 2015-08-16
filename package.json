@@ -7,7 +7,8 @@
   "scripts": {
     "cover": "node --harmony ./node_modules/istanbul-harmony/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports test",
     "doc": "./node_modules/.bin/jsdoc lib/*.js",
-    "test": "mocha test/*.js"
+    "test": "mocha --harmony test/*.js",
+    "ci-test-report": "mocha --harmony --reporter mocha-html-reporter test/*.js"
   },
   "author": "Markus Felten <markus.felten@gmx.de>",
   "license": "BSD-2-Clause",
@@ -21,7 +22,8 @@
     "mocha": "2.2.5",
     "istanbul-harmony": "0.3.16",
     "jsdoc": "^3.3.2",
-    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git"
+    "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git",
+    "mocha-html-reporter": "^0.0.1"
   },
   "_peerDependencies": {
     "kronos-service-manager": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-service-manager.git"
