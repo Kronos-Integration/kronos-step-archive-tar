@@ -78,17 +78,19 @@ describe('untar', function () {
 		it('all entries should be consumed', function (done) {
 			const myManager = kronos.manager().then(function (manager) {
 				require('../index').registerWithManager(manager);
-				manager.declareFlows(flowDecls);
+				manager.registerFlows(flowDecls);
 
 				const flow1 = manager.flowDefinitions.flow1;
-				flow1.initialize(manager);
-
-				// if tar stream ended we should have consumed all entries
-				tarStream.on('end', function () {
-					assert.isTrue(names.file1 && names.file2 && names.file3);
-					assert.equal(archiveName, tarFileName);
-					done();
-				});
+				flow1.start().then(
+					function (resolved) {
+						// if tar stream ended we should have consumed all entries
+						tarStream.on('end', function () {
+							assert.isTrue(names.file1 && names.file2 && names.file3);
+							assert.equal(archiveName, tarFileName);
+							done();
+						});
+					}
+				);
 			});
 		});
 	});
