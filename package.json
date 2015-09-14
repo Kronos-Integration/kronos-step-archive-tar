@@ -13,7 +13,6 @@
   "author": "Markus Felten <markus.felten@gmx.de>",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "log4js": "0.6.26",
     "tar-stream": "1.2.1"
   },
   "devDependencies": {
