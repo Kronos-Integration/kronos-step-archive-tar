@@ -1,7 +1,7 @@
 {
   "name": "kronos-step-archive-tar",
   "tags": "kronos-step",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "flow step to tar/untar streams",
   "main": "index.js",
   "scripts": {
@@ -32,6 +32,6 @@
     "url": "ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step-archive-tar.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4.1.2"
   }
 }
