@@ -3,99 +3,95 @@
 
 "use strict";
 
-const kronos = require('kronos-service-manager');
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs'),
+	events = require('events'),
+	scopeReporter = require('scope-reporter'),
+	path = require('path'),
+	chai = require('chai'),
+	assert = chai.assert,
+	expect = chai.expect,
+	should = chai.should(),
+	kronosStep = require('kronos-step');
 
-const chai = require('chai');
-const assert = chai.assert;
-const expect = chai.expect;
-const should = chai.should();
+const sr = scopeReporter.createReporter(kronosStep.ScopeDefinitions);
+
+const manager = Object.create(new events.EventEmitter(), {
+	stepImplementations: {
+		value: {
+			"kronos-untar": kronosStep.prepareStepForRegistration(require('../lib/untar'))
+		}
+	}
+});
 
 describe('untar', function () {
-
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
 	const names = {};
 	let archiveName;
-	let tarStream;
-
-	const flowDecls = {
-		"flow1": {
-			"steps": {
-				's1': {
-					"type": "kronos-untar",
-					"endpoints": {
-						"in": function (manager, generatorFunction) {
-							if (generatorFunction) {
-								const generatorObject = generatorFunction();
-								tarStream = fs.createReadStream(tarFileName);
-								generatorObject.next();
-
-								generatorObject.next({
-									info: {
-										name: tarFileName
-									},
-									stream: tarStream
-								});
-								return;
-							}
-
-							const myGen = function* () {
-								tarStream = fs.createReadStream(tarFileName);
-
-								yield {
-									info: {
-										name: tarFileName
-									},
-									stream: tarStream
-								};
-							};
-							return myGen();
-						},
-						"out": function (manager) {
-							const myGen = function* () {
-								do {
-									let connection = yield;
-									//console.log(`name: ${connection.info.name}`);
-									names[connection.info.name] = true;
-									archiveName = connection.info.archiveName;
-
-									connection.stream.resume();
-								} while (true);
-							};
-							const go = myGen();
-							go.next();
-							return go;
-						}
-					}
-				}
-			}
+	const tarStep = kronosStep.createStep(manager, sr, {
+		name: "myStep",
+		type: "kronos-untar",
+		endpoints: {
+			"in": kronosStep.createEndpoint('in', {
+				direction: "in"
+			}),
+			"out": kronosStep.createEndpoint('out', {
+				direction: "out"
+			})
 		}
-	};
-
-	describe('passive in', function () {
-		it('all entries should be consumed', function (done) {
-			const myManager = kronos.manager().then(function (manager) {
-				require('../index').registerWithManager(manager);
-				manager.registerFlows(flowDecls);
-
-				const flow1 = manager.flowDefinitions.flow1;
-				flow1.start().then(
-					function (resolved) {
-						// if tar stream ended we should have consumed all entries
-						tarStream.on('end', function () {
-							assert.isTrue(names.file1 && names.file2 && names.file3);
-							assert.equal(archiveName, tarFileName);
-							done();
-						});
-					}
-				);
-			});
-		});
 	});
 
-	describe('active in', function () {
-		// TODO don`t know how to enforce active
+	const testOutEndpoint = kronosStep.createEndpoint('test', {
+		direction: "out"
+	});
+
+	const testInEndpoint = kronosStep.createEndpoint('test', {
+		direction: "in"
+	});
+
+	describe('request', function () {
+		describe('start', function () {
+			it("should produce a request", function (done) {
+
+				testOutEndpoint.setTarget(tarStep.endpoints.in);
+
+				let entries = {};
+				let request;
+
+				tarStep.start().then(function (step) {
+					try {
+						assert.equal(tarStep.state, 'running');
+
+						testInEndpoint.receive(function* () {
+							while (true) {
+								request = yield;
+								//console.log(`got request: ${JSON.stringify(request.info)}`);
+								entries[request.info.name] = true;
+								request.stream.resume();
+							};
+						});
+
+						tarStep.endpoints.out.setTarget(testInEndpoint);
+
+						const tarStream = fs.createReadStream(tarFileName);
+						testOutEndpoint.send({
+							info: {
+								name: tarFileName
+							},
+							stream: tarStream
+						});
+
+						tarStream.on('end', function () {
+							console.log(`entries: ${JSON.stringify(Object.keys(entries))}`);
+							assert.isTrue(entries.file1 && entries.file2 && entries.file3);
+							//assert.equal(archiveName, tarFileName);
+							done();
+						});
+					} catch (e) {
+						done(e);
+					}
+				}, done);
+			});
+		});
 	});
 });
