@@ -16,7 +16,7 @@ const fs = require('fs'),
 const sr = scopeReporter.createReporter(kronosStep.ScopeDefinitions);
 
 const manager = Object.create(new events.EventEmitter(), {
-	stepImplementations: {
+	steps: {
 		value: {
 			"kronos-untar": kronosStep.prepareStepForRegistration(require('../lib/untar'))
 		}

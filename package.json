@@ -20,7 +20,7 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "tar-stream": "1.2.1",
-    "kronos-step": "git+ssh://donkey@mfelten.de/Groups/donkey/git/kronos-step.git"
+    "kronos-step": "https://github.com/Kronos-Integration/kronos-step.git"
   },
   "devDependencies": {
     "chai": "3.2.0",
