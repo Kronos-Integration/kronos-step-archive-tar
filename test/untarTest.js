@@ -4,56 +4,41 @@
 "use strict";
 
 const fs = require('fs'),
-	events = require('events'),
-	scopeReporter = require('scope-reporter'),
 	path = require('path'),
 	chai = require('chai'),
 	assert = chai.assert,
 	expect = chai.expect,
 	should = chai.should(),
-	kronosStep = require('kronos-step');
+	testStep = require('kronos-test-step'),
+	BaseStep = require('kronos-step'),
+	untar = require('../lib/untar');
 
-const sr = scopeReporter.createReporter(kronosStep.ScopeDefinitions);
-
-const manager = Object.create(new events.EventEmitter(), {
-	steps: {
-		value: {
-			"kronos-untar": kronosStep.prepareStepForRegistration(require('../lib/untar'))
-		}
-	}
-});
+const manager = testStep.managerMock;
+require('../index').registerWithManager(manager);
 
 describe('untar', function () {
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
 	const names = {};
 	let archiveName;
-	const tarStep = kronosStep.createStep(manager, sr, {
+	const tarStep = untar.createInstance(manager, undefined, {
 		name: "myStep",
-		type: "kronos-untar",
-		endpoints: {
-			"in": kronosStep.createEndpoint('in', {
-				direction: "in"
-			}),
-			"out": kronosStep.createEndpoint('out', {
-				direction: "out"
-			})
-		}
+		type: "kronos-untar"
 	});
 
-	const testOutEndpoint = kronosStep.createEndpoint('test', {
-		direction: "out"
+	const testOutEndpoint = BaseStep.createEndpoint('testOut', {
+		out: true,
+		active: true,
 	});
 
-	const testInEndpoint = kronosStep.createEndpoint('test', {
-		direction: "in"
+	const testInEndpoint = BaseStep.createEndpoint('testIn', { in : true,
+		passive: true
 	});
 
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
-
-				testOutEndpoint.setTarget(tarStep.endpoints.in);
+				testOutEndpoint.connect(tarStep.endpoints.in);
 
 				let entries = {};
 				let request;
@@ -71,7 +56,7 @@ describe('untar', function () {
 							};
 						});
 
-						tarStep.endpoints.out.setTarget(testInEndpoint);
+						tarStep.endpoints.out.connect(testInEndpoint);
 
 						const tarStream = fs.createReadStream(tarFileName);
 						testOutEndpoint.send({
@@ -82,7 +67,7 @@ describe('untar', function () {
 						});
 
 						tarStream.on('end', function () {
-							console.log(`entries: ${JSON.stringify(Object.keys(entries))}`);
+							//console.log(`entries: ${JSON.stringify(Object.keys(entries))}`);
 							assert.isTrue(entries.file1 && entries.file2 && entries.file3);
 							//assert.equal(archiveName, tarFileName);
 							done();
