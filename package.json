@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "chai": "3.4.1",
-    "chai-as-promised": "5.1.0",
+    "chai-as-promised": "5.2.0",
     "istanbul": "0.4.1",
     "jsdoc": "3.4.0",
     "kronos-test-step": "2.5.0",
