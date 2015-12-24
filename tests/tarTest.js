@@ -31,6 +31,18 @@ describe('tar', function () {
 		passive: true
 	});
 
+	describe('static', function () {
+		testStep.checkStepStatic(manager, tarStep);
+	});
+
+	/* TODO why is this not working
+		describe('live-cycle', function () {
+			testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
+				done();
+			});
+		});
+	*/
+
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
@@ -41,7 +53,6 @@ describe('tar', function () {
 				testInEndpoint.receive(function* () {
 					while (true) {
 						request = yield;
-						console.log(`got request: ${JSON.stringify(request.info)}`);
 						request.stream.resume();
 					};
 				});
@@ -61,6 +72,7 @@ describe('tar', function () {
 						});
 
 						inputStream.on('end', function () {
+							assert.isDefined(request.info);
 							done();
 						});
 					} catch (e) {

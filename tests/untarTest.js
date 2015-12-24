@@ -35,6 +35,16 @@ describe('untar', function () {
 		passive: true
 	});
 
+	describe('static', function () {
+		testStep.checkStepStatic(manager, tarStep);
+	});
+
+	describe('live-cycle', function () {
+		testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
+			done();
+		});
+	});
+
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
