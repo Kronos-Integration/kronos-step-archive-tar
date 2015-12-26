@@ -2,7 +2,9 @@
   "name": "kronos-step-archive-tar",
   "version": "0.0.0",
   "description": "flow step to tar/untar streams",
-  "keywords": ["kronos-step"],
+  "keywords": [
+    "kronos-step"
+  ],
   "main": "index.js",
   "scripts": {
     "cover": "node --harmony ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests",
@@ -10,16 +12,19 @@
     "test": "mocha --harmony tests/*.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "contributors": [{
-    "name": "Torsten Link",
-    "email": "torstenlink@gmx.de"
-  }, {
-    "name": "Markus Felten",
-    "email": "markus.felten@gmx.de"
-  }],
+  "contributors": [
+    {
+      "name": "Torsten Link",
+      "email": "torstenlink@gmx.de"
+    },
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    }
+  ],
   "license": "BSD-2-Clause",
   "dependencies": {
-    "kronos-step": "2.10.0",
+    "kronos-step": "2.10.1",
     "tar-stream": "1.3.1"
   },
   "devDependencies": {
