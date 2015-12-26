@@ -35,13 +35,11 @@ describe('tar', function () {
 		testStep.checkStepStatic(manager, tarStep);
 	});
 
-	/* TODO why is this not working
-		describe('live-cycle', function () {
-			testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
-				done();
-			});
+	describe('live-cycle', function () {
+		testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
+			done();
 		});
-	*/
+	});
 
 	describe('request', function () {
 		describe('start', function () {
