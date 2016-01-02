@@ -24,7 +24,7 @@ describe('tar', function () {
 
 	const testOutEndpoint = new endpoint.ReceiveEndpoint('testOut');
 
-	const testInEndpoint = new endpoint.SendEndpoint('testIn');
+	const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
 	describe('static', function () {
 		testStep.checkStepStatic(manager, tarStep);
@@ -39,7 +39,7 @@ describe('tar', function () {
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
-				testOutEndpoint.connect(tarStep.endpoints.in);
+				testOutEndpoint.connected = tarStep.endpoints.in;
 
 				testInEndpoint.receive = request => {
 					request.stream.resume();
