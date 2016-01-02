@@ -26,9 +26,6 @@ describe('untar', function () {
 		type: "kronos-untar"
 	});
 
-	const testOutEndpoint = new endpoint.SendEndpoint('testOut');
-	const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
-
 	describe('static', function () {
 		testStep.checkStepStatic(manager, tarStep);
 	});
@@ -39,11 +36,28 @@ describe('untar', function () {
 		});
 	});
 
+	/*
+		Error.prepareStackTrace = (err, stackObj) => {
+			return stackObj[0];
+		};
+	*/
+
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
+				const testOutEndpoint = new endpoint.SendEndpoint('testOut');
+				const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
+				tarStep.endpoints.out.connected = testInEndpoint;
 				testOutEndpoint.connected = tarStep.endpoints.in;
+
+				testInEndpoint.receive = request => {
+					//console.log(`got request: ${JSON.stringify(request.info)}`);
+					entries[request.info.name] = true;
+					request.stream.resume();
+					return Promise.resolve("OK");
+				};
+
 
 				let entries = {};
 				let request;
@@ -52,16 +66,8 @@ describe('untar', function () {
 					try {
 						assert.equal(tarStep.state, 'running');
 
-						testInEndpoint.receive = request => {
-							//console.log(`got request: ${JSON.stringify(request.info)}`);
-							entries[request.info.name] = true;
-							request.stream.resume();
-							return Promise.resolve("OK");
-						};
-
-						tarStep.endpoints.out.connect = testInEndpoint;
-
 						const tarStream = fs.createReadStream(tarFileName);
+
 						testOutEndpoint.send({
 							info: {
 								name: tarFileName

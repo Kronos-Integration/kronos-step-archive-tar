@@ -22,7 +22,7 @@ describe('tar', function () {
 		type: "kronos-tar"
 	});
 
-	const testOutEndpoint = new endpoint.ReceiveEndpoint('testOut');
+	const testOutEndpoint = new endpoint.SendEndpoint('testOut');
 
 	const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
@@ -41,7 +41,9 @@ describe('tar', function () {
 			it("should produce a request", function (done) {
 				testOutEndpoint.connected = tarStep.endpoints.in;
 
+				let theRequest;
 				testInEndpoint.receive = request => {
+					theRequest = request;
 					request.stream.resume();
 					return Promise.resolve("OK");
 				};
@@ -52,7 +54,7 @@ describe('tar', function () {
 					try {
 						assert.equal(tarStep.state, 'running');
 
-						const inputStream = fs.createReadStream(path.join(__dirname, 'tarTest.js'));
+						const inputStream = fs.createReadStream(path.join(__dirname, 'tar_test.js'));
 						testOutEndpoint.send({
 							info: {
 								name: "entry1"
@@ -61,7 +63,7 @@ describe('tar', function () {
 						});
 
 						inputStream.on('end', function () {
-							assert.isDefined(request.info);
+							assert.isDefined(theRequest.info);
 							done();
 						});
 					} catch (e) {
