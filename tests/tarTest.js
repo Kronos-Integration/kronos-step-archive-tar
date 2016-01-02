@@ -10,7 +10,7 @@ const fs = require('fs'),
 	expect = chai.expect,
 	should = chai.should(),
 	testStep = require('kronos-test-step'),
-	BaseStep = require('kronos-step'),
+	endpoint = require('kronos-step').endpoint,
 	tar = require('../lib/tar');
 
 const manager = testStep.managerMock;
@@ -22,14 +22,9 @@ describe('tar', function () {
 		type: "kronos-tar"
 	});
 
-	const testOutEndpoint = BaseStep.createEndpoint('testOut', {
-		out: true,
-		active: true
-	});
+	const testOutEndpoint = new endpoint.ReceiveEndpoint('testOut');
 
-	const testInEndpoint = BaseStep.createEndpoint('testIn', { in : true,
-		passive: true
-	});
+	const testInEndpoint = new endpoint.SendEndpoint('testIn');
 
 	describe('static', function () {
 		testStep.checkStepStatic(manager, tarStep);
@@ -46,16 +41,12 @@ describe('tar', function () {
 			it("should produce a request", function (done) {
 				testOutEndpoint.connect(tarStep.endpoints.in);
 
-				let request;
+				testInEndpoint.receive = request => {
+					request.stream.resume();
+					return Promise.resolve("OK");
+				};
 
-				testInEndpoint.receive(function* () {
-					while (true) {
-						request = yield;
-						request.stream.resume();
-					};
-				});
-
-				tarStep.endpoints.out.connect(testInEndpoint);
+				tarStep.endpoints.out.connected = testInEndpoint;
 
 				tarStep.start().then(function (step) {
 					try {
