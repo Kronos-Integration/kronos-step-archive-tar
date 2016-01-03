@@ -10,7 +10,7 @@ const fs = require('fs'),
 	expect = chai.expect,
 	should = chai.should(),
 	testStep = require('kronos-test-step'),
-	BaseStep = require('kronos-step'),
+	endpoint = require('kronos-step').endpoint,
 	untar = require('../lib/untar');
 
 const manager = testStep.managerMock;
@@ -26,15 +26,6 @@ describe('untar', function () {
 		type: "kronos-untar"
 	});
 
-	const testOutEndpoint = BaseStep.createEndpoint('testOut', {
-		out: true,
-		active: true
-	});
-
-	const testInEndpoint = BaseStep.createEndpoint('testIn', { in : true,
-		passive: true
-	});
-
 	describe('static', function () {
 		testStep.checkStepStatic(manager, tarStep);
 	});
@@ -45,10 +36,28 @@ describe('untar', function () {
 		});
 	});
 
+	/*
+		Error.prepareStackTrace = (err, stackObj) => {
+			return stackObj[0];
+		};
+	*/
+
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
-				testOutEndpoint.connect(tarStep.endpoints.in);
+				const testOutEndpoint = new endpoint.SendEndpoint('testOut');
+				const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
+
+				tarStep.endpoints.out.connected = testInEndpoint;
+				testOutEndpoint.connected = tarStep.endpoints.in;
+
+				testInEndpoint.receive = request => {
+					//console.log(`got request: ${JSON.stringify(request.info)}`);
+					entries[request.info.name] = true;
+					request.stream.resume();
+					return Promise.resolve("OK");
+				};
+
 
 				let entries = {};
 				let request;
@@ -57,18 +66,8 @@ describe('untar', function () {
 					try {
 						assert.equal(tarStep.state, 'running');
 
-						testInEndpoint.receive(function* () {
-							while (true) {
-								request = yield;
-								//console.log(`got request: ${JSON.stringify(request.info)}`);
-								entries[request.info.name] = true;
-								request.stream.resume();
-							};
-						});
-
-						tarStep.endpoints.out.connect(testInEndpoint);
-
 						const tarStream = fs.createReadStream(tarFileName);
+
 						testOutEndpoint.send({
 							info: {
 								name: tarFileName
@@ -76,7 +75,7 @@ describe('untar', function () {
 							stream: tarStream
 						});
 
-						tarStream.on('end', function () {
+						tarStream.on('end', () => {
 							//console.log(`entries: ${JSON.stringify(Object.keys(entries))}`);
 							assert.isTrue(entries.file1 && entries.file2 && entries.file3);
 							//assert.equal(archiveName, tarFileName);
