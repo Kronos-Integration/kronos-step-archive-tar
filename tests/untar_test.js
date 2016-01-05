@@ -19,8 +19,6 @@ require('../index').registerWithManager(manager);
 describe('untar', function () {
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
-	const names = {};
-	let archiveName;
 	const tarStep = untar.createInstance(manager, undefined, {
 		name: "myStep",
 		type: "kronos-untar"
@@ -36,12 +34,6 @@ describe('untar', function () {
 		});
 	});
 
-	/*
-		Error.prepareStackTrace = (err, stackObj) => {
-			return stackObj[0];
-		};
-	*/
-
 	describe('request', function () {
 		describe('start', function () {
 			it("should produce a request", function (done) {
@@ -52,15 +44,9 @@ describe('untar', function () {
 				testOutEndpoint.connected = tarStep.endpoints.in;
 
 				testInEndpoint.receive = request => {
-					//console.log(`got request: ${JSON.stringify(request.info)}`);
-					entries[request.info.name] = true;
 					request.stream.resume();
-					return Promise.resolve("OK");
+					return Promise.resolve(request.info.name);
 				};
-
-
-				let entries = {};
-				let request;
 
 				tarStep.start().then(function (step) {
 					try {
@@ -73,14 +59,12 @@ describe('untar', function () {
 								name: tarFileName
 							},
 							stream: tarStream
-						});
+						}).then(result => {
+							console.log(`Result: ${result}`);
 
-						tarStream.on('end', () => {
-							//console.log(`entries: ${JSON.stringify(Object.keys(entries))}`);
-							assert.isTrue(entries.file1 && entries.file2 && entries.file3);
-							//assert.equal(archiveName, tarFileName);
+							assert.deepEqual(result, ['file1', 'file2', 'file3']);
 							done();
-						});
+						}).catch(done);
 					} catch (e) {
 						done(e);
 					}
