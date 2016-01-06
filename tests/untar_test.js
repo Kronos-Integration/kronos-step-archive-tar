@@ -34,42 +34,53 @@ describe('untar', function () {
 		});
 	});
 
-	describe('request', function () {
-		describe('start', function () {
-			it("should produce a request", function (done) {
-				const testOutEndpoint = new endpoint.SendEndpoint('testOut');
-				const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
+	describe('requests', function () {
+		const testOutEndpoint = new endpoint.SendEndpoint('testOut');
+		const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
-				tarStep.endpoints.out.connected = testInEndpoint;
-				testOutEndpoint.connected = tarStep.endpoints.in;
+		tarStep.endpoints.out.connected = testInEndpoint;
+		testOutEndpoint.connected = tarStep.endpoints.in;
 
-				testInEndpoint.receive = request => {
-					request.stream.resume();
-					return Promise.resolve(request.info.name);
-				};
+		testInEndpoint.receive = request => {
+			request.stream.resume();
 
-				tarStep.start().then(function (step) {
-					try {
-						assert.equal(tarStep.state, 'running');
+			return new Promise((fullfilled, rejected) => {
+				//console.log(`${request.info.timeout} ${request.info.name}`);
+				setTimeout(() => {
+					fullfilled(request.info.name);
+				}, request.info.timeout);
+			});
+		};
 
+		it("should produce requests", function (done) {
+			tarStep.start().then(function (step) {
+				try {
+					assert.equal(tarStep.state, 'running');
+
+					const REQUESTS = 10;
+
+					for (let i = 0; i < REQUESTS; i++) {
 						const tarStream = fs.createReadStream(tarFileName);
 
 						testOutEndpoint.send({
 							info: {
+								timeout: i % 2 == 0 ? 50 : 10,
 								name: tarFileName
 							},
 							stream: tarStream
 						}).then(result => {
-							console.log(`Result: ${result}`);
+							console.log(`${i} Result: ${result}`);
 
 							assert.deepEqual(result, ['file1', 'file2', 'file3']);
-							done();
+							if (i === REQUESTS - 1)
+								done();
 						}).catch(done);
-					} catch (e) {
-						done(e);
 					}
-				}, done);
-			});
+
+				} catch (e) {
+					done(e);
+				}
+			}, done);
 		});
 	});
 });
