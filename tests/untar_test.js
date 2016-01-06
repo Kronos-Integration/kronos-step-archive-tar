@@ -41,14 +41,12 @@ describe('untar', function () {
 		tarStep.endpoints.out.connected = testInEndpoint;
 		testOutEndpoint.connected = tarStep.endpoints.in;
 
-		testInEndpoint.receive = request => {
+		testInEndpoint.receive = (request, beforeRequest) => {
 			request.stream.resume();
 
 			return new Promise((fullfilled, rejected) => {
 				//console.log(`${request.info.timeout} ${request.info.name}`);
-				setTimeout(() => {
-					fullfilled(request.info.name);
-				}, request.info.archiveName);
+				setTimeout(() => fullfilled(request.info.name), beforeRequest.info.timeout);
 			});
 		};
 
@@ -64,8 +62,7 @@ describe('untar', function () {
 
 						testOutEndpoint.send({
 							info: {
-								name: i === REQUESTS - 1 ? 500 : i % 2 == 0 ? 50 : 10
-									//name: tarFileName
+								timeout: i === REQUESTS - 1 ? 500 : i % 2 === 0 ? 50 : 10
 							},
 							stream: tarStream
 						}).then(result => {
