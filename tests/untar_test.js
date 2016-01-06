@@ -48,7 +48,7 @@ describe('untar', function () {
 				//console.log(`${request.info.timeout} ${request.info.name}`);
 				setTimeout(() => {
 					fullfilled(request.info.name);
-				}, request.info.timeout);
+				}, request.info.archiveName);
 			});
 		};
 
@@ -64,16 +64,19 @@ describe('untar', function () {
 
 						testOutEndpoint.send({
 							info: {
-								timeout: i % 2 == 0 ? 50 : 10,
-								name: tarFileName
+								name: i === REQUESTS - 1 ? 500 : i % 2 == 0 ? 50 : 10
+									//name: tarFileName
 							},
 							stream: tarStream
 						}).then(result => {
 							console.log(`${i} Result: ${result}`);
 
 							assert.deepEqual(result, ['file1', 'file2', 'file3']);
-							if (i === REQUESTS - 1)
+
+							if (i === REQUESTS - 1) {
 								done();
+							}
+
 						}).catch(done);
 					}
 
