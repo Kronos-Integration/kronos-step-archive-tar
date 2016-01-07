@@ -23,7 +23,6 @@ describe('tar', function () {
 	});
 
 	const testOutEndpoint = new endpoint.SendEndpoint('testOut');
-
 	const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
 	describe('static', function () {
