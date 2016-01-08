@@ -1,7 +1,7 @@
 {
   "name": "kronos-step-archive-tar",
   "version": "0.0.0",
-  "description": "flow step to tar/untar streams",
+  "description": "step to tar/untar requests",
   "keywords": [
     "kronos-step"
   ],
@@ -12,16 +12,13 @@
     "test": "mocha tests/*.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
-  "contributors": [
-    {
-      "name": "Torsten Link",
-      "email": "torstenlink@gmx.de"
-    },
-    {
-      "name": "Markus Felten",
-      "email": "markus.felten@gmx.de"
-    }
-  ],
+  "contributors": [{
+    "name": "Torsten Link",
+    "email": "torstenlink@gmx.de"
+  }, {
+    "name": "Markus Felten",
+    "email": "markus.felten@gmx.de"
+  }],
   "license": "BSD-2-Clause",
   "dependencies": {
     "kronos-step": "^3.4.0",
@@ -30,6 +27,7 @@
   "devDependencies": {
     "chai": "3.4.1",
     "chai-as-promised": "5.2.0",
+    "cz-conventional-changelog": "^1.1.5",
     "istanbul": "0.4.1",
     "jsdoc": "3.4.0",
     "kronos-test-step": "^2.9.1",
@@ -42,5 +40,10 @@
   },
   "engines": {
     "node": ">=4.2.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
