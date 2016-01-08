@@ -9,6 +9,7 @@
 [![devDependency Status](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar/dev-status.svg)](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar#info=devDependencies)
 [![docs](http://inch-ci.org/github/Kronos-Integration/kronos-step-archive-tar.svg?branch=master)](http://inch-ci.org/github/Kronos-Integration/kronos-step-archive-tar)
 [![downloads](http://img.shields.io/npm/dm/kronos-step-archive-tar.svg?style=flat-square)](https://npmjs.org/package/kronos-step-archive-tar)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 install
 =======
