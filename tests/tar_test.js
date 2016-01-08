@@ -40,12 +40,14 @@ describe('tar', function () {
 			it("should produce a request", function (done) {
 				testOutEndpoint.connected = tarStep.endpoints.in;
 
-				let theRequest;
-				testInEndpoint.receive = request => {
-					theRequest = request;
-					request.stream.resume();
-					return Promise.resolve("OK");
-				};
+				testInEndpoint.receive = request =>
+					new Promise((fullfilled, rejected) => {
+						request.stream.on('end', () => {
+							console.log("stream end");
+							fullfilled("OK");
+						});
+						request.stream.resume();
+					});
 
 				tarStep.endpoints.out.connected = testInEndpoint;
 
@@ -53,16 +55,19 @@ describe('tar', function () {
 					try {
 						assert.equal(tarStep.state, 'running');
 
-						const inputStream = fs.createReadStream(path.join(__dirname, 'tar_test.js'));
-						testOutEndpoint.send({
+						let reponse = testOutEndpoint.send({
 							info: {
 								name: "entry1"
 							},
-							stream: inputStream
+							stream: fs.createReadStream(path.join(__dirname, 'tar_test.js'))
 						});
 
-						inputStream.on('end', function () {
-							assert.isDefined(theRequest.info);
+						reponse.then(r => {
+							console.log(`A response: ${r}`);
+						});
+
+						testOutEndpoint.send({}).then(r => {
+							console.log(`B response: ${r}`);
 							done();
 						});
 					} catch (e) {
