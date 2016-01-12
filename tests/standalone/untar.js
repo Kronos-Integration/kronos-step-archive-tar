@@ -30,7 +30,7 @@ const flowDecls = {
 								info: {
 									name: tarFileName
 								},
-								stream: tarStream
+								payload: tarStream
 							});
 							return;
 						}
@@ -42,7 +42,7 @@ const flowDecls = {
 								info: {
 									name: tarFileName
 								},
-								stream: tarStream
+								payload: tarStream
 							};
 						};
 						return myGen();
@@ -55,7 +55,7 @@ const flowDecls = {
 								names[connection.info.name] = true;
 								archiveName = connection.info.archiveName;
 
-								connection.stream.resume();
+								connection.payload.resume();
 							} while (true);
 						};
 						const go = myGen();

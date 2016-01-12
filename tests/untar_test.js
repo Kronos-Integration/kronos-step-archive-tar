@@ -42,7 +42,7 @@ describe('untar', function () {
 		testOutEndpoint.connected = tarStep.endpoints.in;
 
 		testInEndpoint.receive = (request, beforeRequest) => {
-			request.stream.resume();
+			request.payload.resume();
 
 			return new Promise((fullfilled, rejected) => {
 				//console.log(`${request.info.timeout} ${request.info.name}`);
@@ -64,7 +64,7 @@ describe('untar', function () {
 							info: {
 								timeout: i === REQUESTS - 1 ? 500 : i % 2 === 0 ? 50 : 10
 							},
-							stream: tarStream
+							payload: tarStream
 						}).then(result => {
 							console.log(`${i} Result: ${result}`);
 

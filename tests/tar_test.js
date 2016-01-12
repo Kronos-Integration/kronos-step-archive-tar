@@ -42,11 +42,11 @@ describe('tar', function () {
 
 				testInEndpoint.receive = request =>
 					new Promise((fullfilled, rejected) => {
-						request.stream.on('end', () => {
+						request.payload.on('end', () => {
 							console.log("stream end");
 							fullfilled("OK");
 						});
-						request.stream.resume();
+						request.payload.resume();
 					});
 
 				tarStep.endpoints.out.connected = testInEndpoint;
@@ -59,7 +59,7 @@ describe('tar', function () {
 							info: {
 								name: "entry1"
 							},
-							stream: fs.createReadStream(path.join(__dirname, 'tar_test.js'))
+							payload: fs.createReadStream(path.join(__dirname, 'tar_test.js'))
 						});
 
 						reponse.then(r => {
