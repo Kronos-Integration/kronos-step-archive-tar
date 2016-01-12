@@ -50,7 +50,6 @@ describe('tar', function () {
 					});
 
 				tarStep.endpoints.out.connected = testInEndpoint;
-
 				tarStep.start().then(function (step) {
 					try {
 						assert.equal(tarStep.state, 'running');
