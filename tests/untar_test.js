@@ -16,7 +16,7 @@ const fs = require('fs'),
 const manager = testStep.managerMock;
 require('../index').registerWithManager(manager);
 
-describe('untar', function () {
+describe('untar', () => {
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
 	const tarStep = untar.createInstance(manager, undefined, {
@@ -24,17 +24,17 @@ describe('untar', function () {
 		type: "kronos-untar"
 	});
 
-	describe('static', function () {
+	describe('static', () => {
 		testStep.checkStepStatic(manager, tarStep);
 	});
 
-	describe('live-cycle', function () {
+	describe('live-cycle', () => {
 		testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
 			done();
 		});
 	});
 
-	describe('requests', function () {
+	describe('requests', () => {
 		const testOutEndpoint = new endpoint.SendEndpoint('testOut');
 		const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
@@ -50,8 +50,8 @@ describe('untar', function () {
 			});
 		};
 
-		it("should produce requests", function (done) {
-			tarStep.start().then(function (step) {
+		it("should produce requests", done => {
+			tarStep.start().then(step => {
 				try {
 					assert.equal(tarStep.state, 'running');
 
@@ -60,7 +60,7 @@ describe('untar', function () {
 					for (let i = 0; i < REQUESTS; i++) {
 						const tarStream = fs.createReadStream(tarFileName);
 
-						testOutEndpoint.send({
+						testOutEndpoint.receive({
 							info: {
 								timeout: i === REQUESTS - 1 ? 500 : i % 2 === 0 ? 50 : 10
 							},
@@ -73,7 +73,6 @@ describe('untar', function () {
 							if (i === REQUESTS - 1) {
 								done();
 							}
-
 						}).catch(done);
 					}
 

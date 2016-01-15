@@ -54,7 +54,7 @@ describe('tar', function () {
 					try {
 						assert.equal(tarStep.state, 'running');
 
-						let reponse = testOutEndpoint.send({
+						let reponse = testOutEndpoint.receive({
 							info: {
 								name: "entry1"
 							},
@@ -65,7 +65,7 @@ describe('tar', function () {
 							console.log(`A response: ${r}`);
 						});
 
-						testOutEndpoint.send({}).then(r => {
+						testOutEndpoint.receive({}).then(r => {
 							console.log(`B response: ${r}`);
 							done();
 						});
