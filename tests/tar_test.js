@@ -16,7 +16,7 @@ const fs = require('fs'),
 const manager = testStep.managerMock;
 require('../index').registerWithManager(manager);
 
-describe('tar', function () {
+describe('tar', () => {
 	const tarStep = tar.createInstance(manager, undefined, {
 		name: "myStep",
 		type: "kronos-tar"
@@ -25,19 +25,18 @@ describe('tar', function () {
 	const testOutEndpoint = new endpoint.SendEndpoint('testOut');
 	const testInEndpoint = new endpoint.ReceiveEndpoint('testIn');
 
-	describe('static', function () {
+	describe('static', () => {
 		testStep.checkStepStatic(manager, tarStep);
 	});
 
-	describe('live-cycle', function () {
-		testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
-			done();
-		});
+	describe('live-cycle', () => {
+		testStep.checkStepLivecycle(manager, tarStep, (step, state, livecycle, done) =>
+			done());
 	});
 
-	describe('request', function () {
-		describe('start', function () {
-			it("should produce a request", function (done) {
+	describe('request', () => {
+		describe('start', () => {
+			it("should produce a request", done => {
 				testOutEndpoint.connected = tarStep.endpoints.in;
 
 				testInEndpoint.receive = request =>
@@ -50,7 +49,7 @@ describe('tar', function () {
 					});
 
 				tarStep.endpoints.out.connected = testInEndpoint;
-				tarStep.start().then(function (step) {
+				tarStep.start().then(() => {
 					try {
 						assert.equal(tarStep.state, 'running');
 

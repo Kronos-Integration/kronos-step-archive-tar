@@ -29,9 +29,8 @@ describe('untar', () => {
 	});
 
 	describe('live-cycle', () => {
-		testStep.checkStepLivecycle(manager, tarStep, function (step, state, livecycle, done) {
-			done();
-		});
+		testStep.checkStepLivecycle(manager, tarStep, (step, state, livecycle, done) =>
+			done());
 	});
 
 	describe('requests', () => {
