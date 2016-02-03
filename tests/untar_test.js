@@ -10,23 +10,29 @@ const fs = require('fs'),
 	expect = chai.expect,
 	should = chai.should(),
 	testStep = require('kronos-test-step'),
-	endpoint = require('kronos-step').endpoint,
+	ksm = require('kronos-service-manager'),
+	endpoint = require('kronos-endpoint'),
 	untar = require('../lib/untar');
 
-const manager = testStep.managerMock;
-require('../index').registerWithManager(manager);
+let manager;
 
-describe('untar', () => {
+before(done => {
+	ksm.manager({}, [require('../index')]).then(m => {
+		manager = m;
+		done();
+	});
+});
+
+
+it('untar', () => {
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
-	const tarStep = untar.createInstance(manager, undefined, {
+	const tarStep = untar.createInstance({
 		name: "myStep",
 		type: "kronos-untar"
-	});
+	}, manager);
 
-	describe('static', () => {
-		testStep.checkStepStatic(manager, tarStep);
-	});
+	describe('static', () => testStep.checkStepStatic(manager, tarStep));
 
 	describe('live-cycle', () => {
 		testStep.checkStepLivecycle(manager, tarStep, (step, state, livecycle, done) =>
