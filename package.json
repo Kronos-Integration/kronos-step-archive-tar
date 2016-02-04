@@ -1,15 +1,15 @@
 {
   "name": "kronos-step-archive-tar",
-  "version": "0.0.0",
+  "version": "0.0.0-semantic-release",
   "description": "step to tar/untar requests",
   "keywords": [
     "kronos-step"
   ],
   "main": "index.js",
   "scripts": {
-    "cover": "node ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests",
-    "doc": "./node_modules/.bin/jsdoc lib/*_test.js",
-    "test": "mocha tests/*.js",
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --R spec --U exports tests/*_test.js",
+    "doc": "jsdoc lib/*.js",
+    "test": "mocha tests/*_test.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "contributors": [
