@@ -36,7 +36,7 @@
     "kronos-service-manager": "^3.2.10",
     "kronos-test-step": "^3.0.2",
     "mocha": "2.4.5",
-    "semantic-release": "6.2.0"
+    "semantic-release": "6.2.1"
   },
   "repository": {
     "type": "git",
