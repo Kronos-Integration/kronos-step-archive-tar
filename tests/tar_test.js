@@ -1,7 +1,7 @@
 /* global describe, it, before */
 /* jslint node: true, esnext: true */
 
-"use strict";
+'use strict';
 
 const fs = require('fs'),
 	path = require('path'),
@@ -25,8 +25,8 @@ before(done => {
 
 it('tar', () => {
 	const tarStep = tar.createInstance({
-		name: "myStep",
-		type: "kronos-tar"
+		name: 'myStep',
+		type: 'kronos-tar'
 	}, manager);
 
 	describe('static', () => testStep.checkStepStatic(manager, tarStep));
@@ -40,14 +40,14 @@ it('tar', () => {
 	});
 
 	describe('request', () => {
-		it("should produce a request", done => {
+		it('should produce a request', done => {
 			testOutEndpoint.connected = tarStep.endpoints.in;
 
 			testInEndpoint.receive = request =>
 				new Promise((fullfilled, rejected) => {
 					request.payload.on('end', () => {
-						console.log("stream end");
-						fullfilled("OK");
+						console.log('stream end');
+						fullfilled('OK');
 					});
 					request.payload.resume();
 				});
@@ -59,7 +59,7 @@ it('tar', () => {
 
 					let reponse = testOutEndpoint.receive({
 						info: {
-							name: "entry1"
+							name: 'entry1'
 						},
 						payload: fs.createReadStream(path.join(__dirname, 'tar_test.js'))
 					});

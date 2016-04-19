@@ -1,7 +1,7 @@
 /* global describe, it, before */
 /* jslint node: true, esnext: true */
 
-"use strict";
+'use strict';
 
 const fs = require('fs'),
 	path = require('path'),
@@ -28,8 +28,8 @@ it('untar', () => {
 	const tarFileName = path.join(__dirname, 'fixtures/a.tar');
 
 	const tarStep = untar.createInstance({
-		name: "myStep",
-		type: "kronos-untar"
+		name: 'myStep',
+		type: 'kronos-untar'
 	}, manager);
 
 	describe('static', () => testStep.checkStepStatic(manager, tarStep));
@@ -55,7 +55,7 @@ it('untar', () => {
 			});
 		};
 
-		it("should produce requests", done => {
+		it('should produce requests', done => {
 			tarStep.start().then(step => {
 				try {
 					assert.equal(tarStep.state, 'running');
