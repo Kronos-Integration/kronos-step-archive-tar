@@ -43,7 +43,7 @@
     "url": "https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
   },
   "engines": {
-    "node": ">=6.1"
+    "node": ">=6.4"
   },
   "config": {
     "commitizen": {
