@@ -1,5 +1,5 @@
 /* jslint node: true, esnext: true */
-"use strict";
+'use strict';
 
 exports.registerWithManager = manager => Promise.all([
   manager.registerStep(require('./lib/untar')),
