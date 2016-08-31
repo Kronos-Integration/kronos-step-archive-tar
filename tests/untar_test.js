@@ -71,7 +71,7 @@ it('untar', () => {
 							},
 							payload: tarStream
 						}).then(result => {
-							console.log(`${i} Result: ${result}`);
+							//console.log(`${i} Result: ${result}`);
 
 							assert.deepEqual(result, ['file1', 'file2', 'file3']);
 
