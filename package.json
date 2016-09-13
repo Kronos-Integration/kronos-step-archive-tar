@@ -24,7 +24,7 @@
   ],
   "license": "BSD-2-Clause",
   "dependencies": {
-    "kronos-endpoint": "^2.13.2",
+    "kronos-endpoint": "^2.13.3",
     "kronos-step": "^5.3.4",
     "tar-stream": "1.5.2"
   },
