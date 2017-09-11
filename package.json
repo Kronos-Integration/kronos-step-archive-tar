@@ -29,29 +29,32 @@
     "tar-stream": "1.5.4"
   },
   "devDependencies": {
-    "chai": "4.1.2",
+    "chai": "^4.1.2",
     "cz-conventional-changelog": "2.0.0",
     "istanbul": "0.4.5",
     "jsdoc": "3.5.4",
     "kronos-service-manager": "^3.5.10",
     "kronos-test-step": "^3.1.4",
-    "mocha": "3.5.2",
-    "semantic-release": "7.0.2"
+    "mocha": "^3.5.2",
+    "semantic-release": "^8.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
+    "url": "git+https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
   },
   "engines": {
-    "node": ">=6.9.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "node": ">=8.4.0"
   },
   "bugs": {
     "url": "https://github.com/Kronos-Integration/kronos-step-archive-tar/issues"
   },
-  "homepage": "https://github.com/Kronos-Integration/kronos-step-archive-tar#readme"
+  "homepage": "https://github.com/Kronos-Integration/kronos-step-archive-tar#readme",
+  "xo": {
+    "space": true
+  },
+  "template": {
+    "repository": {
+      "url": "https://github.com/Kronos-Tools/npm-package-template-minimal.git"
+    }
+  }
 }
