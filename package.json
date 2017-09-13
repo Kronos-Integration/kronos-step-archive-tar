@@ -43,7 +43,7 @@
     "url": "git+https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
   },
   "engines": {
-    "node": ">=8.4.0"
+    "node": ">=8.5.0"
   },
   "bugs": {
     "url": "https://github.com/Kronos-Integration/kronos-step-archive-tar/issues"
