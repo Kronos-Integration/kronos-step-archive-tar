@@ -2,21 +2,19 @@
   "name": "kronos-step-archive-tar",
   "version": "0.0.0-semantic-release",
   "description": "step to tar/untar requests",
-  "keywords": [
-    "kronos-step"
-  ],
-  "main": "index.js",
+  "keywords": ["kronos-step"],
+  "main": "dist/tar.js",
+  "module": "src/tar.js",
   "scripts": {
     "cover": "nyc --temp-directory build/nyc ava",
-    "doc": "./node_modules/.bin/jsdoc lib/*.js",
     "test": "ava",
     "semantic-release": "semantic-release",
     "precover": "rollup -c tests/rollup.config.js",
     "pretest": "rollup -c tests/rollup.config.js",
     "posttest": "npm run prepare && markdown-doctest",
     "prepare": "rollup -c",
-    "docs": "documentation readme {{module}} --section=API",
-    "lint": "documentation lint {{module}}"
+    "docs": "documentation readme src/tar.js --section=API",
+    "lint": "documentation lint src/tar.js"
   },
   "contributors": [
     {
@@ -49,15 +47,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
+    "url":
+      "git+https://github.com/Kronos-Integration/kronos-step-archive-tar.git"
   },
   "engines": {
     "node": ">=8.9.3"
   },
   "bugs": {
-    "url": "https://github.com/Kronos-Integration/kronos-step-archive-tar/issues"
+    "url":
+      "https://github.com/Kronos-Integration/kronos-step-archive-tar/issues"
   },
-  "homepage": "https://github.com/Kronos-Integration/kronos-step-archive-tar#readme",
+  "homepage":
+    "https://github.com/Kronos-Integration/kronos-step-archive-tar#readme",
   "xo": {
     "space": true
   },
@@ -67,23 +68,13 @@
     }
   },
   "ava": {
-    "files": [
-      "build/*-test.js"
-    ],
-    "presets": [
-      "env"
-    ],
-    "require": [
-      "babel-register"
-    ]
+    "files": ["build/*-test.js"],
+    "presets": ["env"],
+    "require": ["babel-register"]
   },
   "nyc": {
-    "include": [
-      "build/*-test.js"
-    ],
-    "reporter": [
-      "lcov"
-    ],
+    "include": ["build/*-test.js"],
+    "reporter": ["lcov"],
     "report-dir": "./build/coverage"
   }
 }
