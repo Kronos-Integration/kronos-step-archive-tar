@@ -1,6 +1,9 @@
 {
   "name": "kronos-step-archive-tar",
   "version": "0.0.0-semantic-release",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/tar.js",
   "module": "src/tar.js",
   "description": "step to tar/untar requests",
