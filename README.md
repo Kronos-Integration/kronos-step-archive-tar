@@ -7,7 +7,6 @@
 [![Coverage Status](https://coveralls.io/repos/Kronos-Integration/kronos-step-archive-tar/badge.svg)](https://coveralls.io/r/Kronos-Integration/kronos-step-archive-tar)
 [![Known Vulnerabilities](https://snyk.io/test/github/Kronos-Integration/kronos-step-archive-tar/badge.svg)](https://snyk.io/test/github/Kronos-Integration/kronos-step-archive-tar)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/kronos-step-archive-tar.svg?style=flat-square)](https://github.com/Kronos-Integration/kronos-step-archive-tar/issues)
-[![Stories in Ready](https://badge.waffle.io/Kronos-Integration/kronos-step-archive-tar.svg?label=ready&title=Ready)](http://waffle.io/Kronos-Integration/kronos-step-archive-tar)
 [![Dependency Status](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar.svg)](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar)
 [![devDependency Status](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar/dev-status.svg)](https://david-dm.org/Kronos-Integration/kronos-step-archive-tar#info=devDependencies)
 [![docs](http://inch-ci.org/github/Kronos-Integration/kronos-step-archive-tar.svg?branch=master)](http://inch-ci.org/github/Kronos-Integration/kronos-step-archive-tar)
